@@ -1,0 +1,16 @@
+.item {
+    margin: 10px;
+    padding: 10px;
+    position: absolute;
+    display: block;
+    width: 411px;
+    height: 291px;
+    border: 2px solid white;
+    text-align: center;
+    font-size: 20px;
+    /* background-color: rgb(155, 155, 155); */
+    opacity: 0.6;
+    color: white;
+    transition: opacity 1s, background-color 1s;
+    overflow: hidden;
+}
