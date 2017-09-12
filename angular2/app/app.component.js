@@ -1,4 +1,4 @@
-System.register(['@angular/core', './carousel.component'], function(exports_1, context_1) {
+System.register(['angular2/core', './carousel/carousel.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -23,6 +23,8 @@ System.register(['@angular/core', './carousel.component'], function(exports_1, c
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
+                    this._width = 500;
+                    this._width_string = this._width + 'px';
                     this.carousel_items = [
                         { title: 'Item1', body: '<p>Blaubären!</p>' },
                         { title: 'Item2', body: '<p>Graubären!</p>' },
@@ -30,12 +32,22 @@ System.register(['@angular/core', './carousel.component'], function(exports_1, c
                         { title: 'Item4', body: '<p>Orangebären!</p>' },
                         { title: 'Item5', body: '<p>Lilabären!</p>' },
                         { title: 'Item6', body: '<p>Blingbong</p><p>Blongbing!</p>' }];
-                    // this.carousel_items[0].
                 }
+                AppComponent.prototype.next = function () {
+                    this._carousel.next();
+                };
+                AppComponent.prototype.prev = function () {
+                    this._carousel.prev();
+                };
+                __decorate([
+                    core_1.ViewChild('carousel'), 
+                    __metadata('design:type', Object)
+                ], AppComponent.prototype, "_carousel", void 0);
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        template: "\n        <h1>Hello, Angular</h1>\n        <carousel [items]=\"carousel_items\" [item-width]=\"200\"></carousel>",
+                        templateUrl: 'app/app.component.html',
+                        styleUrls: ['app/app.component.css'],
                         directives: [carousel_component_1.CarouselComponent]
                     }), 
                     __metadata('design:paramtypes', [])

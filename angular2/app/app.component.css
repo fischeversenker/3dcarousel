@@ -1,0 +1,11 @@
+carousel {
+    box-sizing: border-box;
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    width: 200px;
+    height: 335px;
+    perspective: 3000px;
+    margin-top: 200px;
+    transform: translateZ(-200px);
+}
