@@ -1,5 +1,7 @@
-import {Component, ElementRef, Renderer, Input, OnInit, OnChanges, QueryList, ViewChildren} from 'angular2/core';
+import {Component, HostListener, Renderer, Input, OnInit, OnChanges, QueryList, ViewChildren} from 'angular2/core';
 import {CarouselItem} from '../carousel-item/carousel-item.component';
+import {CarouselService} from '../shared/carousel-service.service';
+import {CarouselItemObject} from '../shared/carousel-service.service';
 
 @Component({
     selector: 'carousel',
@@ -9,43 +11,44 @@ import {CarouselItem} from '../carousel-item/carousel-item.component';
 })
 export class CarouselComponent {
 
-    _current_index = 0;
-    _inc_step: number;
-    _radius: number;
     @Input('item-width')
     _item_width: number;
-    
-    @Input('items')
-    _raw_items: Object[];
-
     @ViewChildren(CarouselItem)
     _items: QueryList<CarouselItem>
+    @HostListener('window:keydown', ['$event'])
+    keyboardInput(event: KeyboardEvent) {
+        switch(event.keyCode) {
+            case 37:
+                this.prev();
+                break;
+            case 39:
+                this.next();
+                break;
+        }
+    }
 
-    _transform_string: string = '';
+    _raw_items: CarouselItemObject[];
+    _current_index: number;
+    _inc_step: number;
+    _radius: number;
+    _transform_string: string;
 
-    constructor(private el: ElementRef, public renderer: Renderer) { }
+    constructor(private carouselService: CarouselService) { }
     
     ngOnInit() {
-        let length = this._raw_items.length;
-
-        this._inc_step = 360 / length;
-        this._radius = Math.ceil((this._item_width / 1.9) / Math.tan(Math.PI / length));
-        this._transform_string = this.buildTransformString(-this._radius, 0);
-        this.update();
+        this._raw_items = this.carouselService.getCarouselItems(5);
+        let count = this._raw_items.length;
+        this._inc_step = 360 / count;
+        this._radius = (this._item_width / 1.9) / Math.tan(Math.PI / count);
+        this._current_index = 0;
     }
     
     ngAfterViewInit() {
-        setTimeout(() => this.goto(0), 20);
+        setTimeout(this.update.bind(this), 0);
     }
-    
-    private select(index) {
-        this._current_index = index;
-        while (index < 0) {
-            index += this._items.length;
-        }
-        while (index >= this._items.length) {
-            index -= this._items.length;
-        }
+
+    private markSelected(index) {
+        index = this.cleanedIndex(index);
         this._items.toArray().forEach(function(inst, i) {
             if (i === index) {
                 inst.select();
@@ -56,35 +59,45 @@ export class CarouselComponent {
     }
 
     goto(i: number) {
-        // logic for direction of rotation
-        // current_index = -13, ci % length = -1, made positive: ci + length = 5
-        this.select(i);
+        let ci = this.cleanedIndex(this._current_index);
+        let count = this._raw_items.length;
+        let halfDistance = Math.floor(count / 2);
+        let inc = i - ci;
+        if (inc > halfDistance) {
+            inc = inc - count;
+        } else if (inc < -halfDistance) {
+            inc = count + inc;
+        }
+        this._current_index += inc;
         this.update();
     }
 
     next() {
-        this.select(this._current_index+1);
+        this._current_index++;
         this.update();
     }
 
     prev() {
-        this.select(this._current_index-1);
+        this._current_index--;
         this.update();
     }
 
-    private update() {
-        this._transform_string = this.buildTransformString(-this._radius, -this._inc_step * this._current_index);
-    }
-
-    angleForIndex(index: number) {
-        if (index < 0 || index >= this._raw_items.length) {
-            throw(Error());
+    private cleanedIndex(index: number, lower: number = 0, upper: number = this._items.length, count: number = this._items.length) {
+        while (index < lower) {
+            index += count;
         }
-        return index * this._inc_step;
+        while (index >= upper) {
+            index -= count;
+        }
+        return index;
     }
 
-    private buildTransformString(radius: number, angle: number) {
-        return 'translateZ(' + radius + 'px) rotateY(' + angle + 'deg)';
+    private update() {
+        this.markSelected(this._current_index);
+        this._transform_string = this.carouselService.buildTransformString(-this._radius, -this._inc_step * this._current_index, true);
     }
 
+    private angleForIndex(index: number) {
+        return this.carouselService.angleForIndex(index, this._raw_items.length);
+    }
 }

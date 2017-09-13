@@ -1,4 +1,5 @@
 import { Component, ViewChild, Input, OnInit, Renderer } from 'angular2/core';
+import {CarouselService} from '../shared/carousel-service.service';
 
 @Component({
     selector: 'carousel-item',
@@ -21,10 +22,10 @@ export class CarouselItem implements OnInit {
     _transform_string: string = '';
     _width_string: string = '';
 
-    constructor() { }
+    constructor(private carouselService: CarouselService) { }
     
     ngOnInit() {
-        this._transform_string = this.buildTransformString(this._radius, this._angle);
+        this._transform_string = this.carouselService.buildTransformString(this._radius, this._angle);
         this._width_string = this._width + 'px';
     }
 
@@ -34,9 +35,5 @@ export class CarouselItem implements OnInit {
 
     deselect() {
         this._selected = false;
-    }
-
-    private buildTransformString(radius: number = 0, angle: number = 0) {
-        return 'rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
     }
 }

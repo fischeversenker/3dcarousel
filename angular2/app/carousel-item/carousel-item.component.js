@@ -1,4 +1,4 @@
-System.register(['angular2/core'], function(exports_1, context_1) {
+System.register(['angular2/core', '../shared/carousel-service.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,16 +10,20 @@ System.register(['angular2/core'], function(exports_1, context_1) {
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1;
+    var core_1, carousel_service_service_1;
     var CarouselItem;
     return {
         setters:[
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (carousel_service_service_1_1) {
+                carousel_service_service_1 = carousel_service_service_1_1;
             }],
         execute: function() {
             CarouselItem = (function () {
-                function CarouselItem() {
+                function CarouselItem(carouselService) {
+                    this.carouselService = carouselService;
                     this._radius = 0;
                     this._angle = 0;
                     this._selected = false;
@@ -27,7 +31,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     this._width_string = '';
                 }
                 CarouselItem.prototype.ngOnInit = function () {
-                    this._transform_string = this.buildTransformString(this._radius, this._angle);
+                    this._transform_string = this.carouselService.buildTransformString(this._radius, this._angle);
                     this._width_string = this._width + 'px';
                 };
                 CarouselItem.prototype.select = function () {
@@ -35,11 +39,6 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 };
                 CarouselItem.prototype.deselect = function () {
                     this._selected = false;
-                };
-                CarouselItem.prototype.buildTransformString = function (radius, angle) {
-                    if (radius === void 0) { radius = 0; }
-                    if (angle === void 0) { angle = 0; }
-                    return 'rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
                 };
                 __decorate([
                     core_1.Input('title'), 
@@ -67,7 +66,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                         templateUrl: 'app/carousel-item/carousel-item.component.html',
                         styleUrls: ['app/carousel-item/carousel-item.component.css']
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [carousel_service_service_1.CarouselService])
                 ], CarouselItem);
                 return CarouselItem;
             }());

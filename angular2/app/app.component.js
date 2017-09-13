@@ -1,4 +1,4 @@
-System.register(['angular2/core', './carousel/carousel.component'], function(exports_1, context_1) {
+System.register(['angular2/core', './carousel/carousel.component', './shared/carousel-service.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', './carousel/carousel.component'], function(exp
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, carousel_component_1;
+    var core_1, carousel_component_1, carousel_service_service_1;
     var AppComponent;
     return {
         setters:[
@@ -19,19 +19,29 @@ System.register(['angular2/core', './carousel/carousel.component'], function(exp
             },
             function (carousel_component_1_1) {
                 carousel_component_1 = carousel_component_1_1;
+            },
+            function (carousel_service_service_1_1) {
+                carousel_service_service_1 = carousel_service_service_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
-                function AppComponent() {
-                    this._width = 500;
+                function AppComponent(carouselService) {
+                    var _this = this;
+                    this.carouselService = carouselService;
+                    this._width = 600;
                     this._width_string = this._width + 'px';
-                    this.carousel_items = [
+                    var items = [
+                        { title: 'Item0', body: '<p>Blaubären!</p>' },
                         { title: 'Item1', body: '<p>Blaubären!</p>' },
                         { title: 'Item2', body: '<p>Graubären!</p>' },
                         { title: 'Item3', body: '<p>Grünbären!</p>' },
                         { title: 'Item4', body: '<p>Orangebären!</p>' },
                         { title: 'Item5', body: '<p>Lilabären!</p>' },
-                        { title: 'Item6', body: '<p>Blingbong</p><p>Blongbing!</p>' }];
+                        { title: 'Item6', body: '<p>Lilabären!</p>' },
+                        { title: 'Item7', body: '<p>Lilabären!</p>' },
+                        { title: 'Item8', body: '<p>Lilabären!</p>' },
+                        { title: 'Item9', body: '<p>Blingbong</p><p>Blongbing!</p>' }];
+                    items.forEach(function (item) { return _this.carouselService.addItem(item); });
                 }
                 AppComponent.prototype.next = function () {
                     this._carousel.next();
@@ -48,9 +58,10 @@ System.register(['angular2/core', './carousel/carousel.component'], function(exp
                         selector: 'my-app',
                         templateUrl: 'app/app.component.html',
                         styleUrls: ['app/app.component.css'],
-                        directives: [carousel_component_1.CarouselComponent]
+                        directives: [carousel_component_1.CarouselComponent],
+                        providers: [carousel_service_service_1.CarouselService]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [carousel_service_service_1.CarouselService])
                 ], AppComponent);
                 return AppComponent;
             }());
