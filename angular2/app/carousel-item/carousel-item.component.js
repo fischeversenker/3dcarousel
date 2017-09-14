@@ -35,15 +35,15 @@ System.register(['angular2/core', '../shared/carousel-service.service'], functio
                     this._width_string = this._width + 'px';
                 };
                 CarouselItem.prototype.select = function () {
+                    if (!this.carouselService.options().radiusOnSelect()) {
+                        this._transform_string = this.carouselService.buildTransformString(0, this._angle);
+                    }
                     this._selected = true;
                 };
                 CarouselItem.prototype.deselect = function () {
+                    this._transform_string = this.carouselService.buildTransformString(this._radius, this._angle);
                     this._selected = false;
                 };
-                __decorate([
-                    core_1.Input('title'), 
-                    __metadata('design:type', String)
-                ], CarouselItem.prototype, "_title", void 0);
                 __decorate([
                     core_1.Input('body'), 
                     __metadata('design:type', String)

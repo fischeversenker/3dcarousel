@@ -10,13 +10,13 @@
     background-color: rgb(155, 155, 155);
     opacity: 0.6;
     color: white;
-    transition: all .5s;
+    transition: all .3s;
     overflow: hidden;
     border: 2px solid white;
 }
 
-.item:not(.selected):hover,
+.item:hover,
 .selected {
     opacity: 1;
-    /* box-shadow: 0 0 10px 6px rgba(13, 209, 187, 0.60); */
+    box-shadow: 0 0 10px 6px rgba(153, 153, 153, 0.60);
 }

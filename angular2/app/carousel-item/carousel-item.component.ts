@@ -7,8 +7,6 @@ import {CarouselService} from '../shared/carousel-service.service';
     styleUrls: ['app/carousel-item/carousel-item.component.css']
 })
 export class CarouselItem implements OnInit {
-    @Input('title')
-    _title: string;
     @Input('body')
     _body: string;
     @Input('radius')
@@ -28,12 +26,16 @@ export class CarouselItem implements OnInit {
         this._transform_string = this.carouselService.buildTransformString(this._radius, this._angle);
         this._width_string = this._width + 'px';
     }
-
+    
     select() {
+        if (!this.carouselService.options().radiusOnSelect()) {
+            this._transform_string = this.carouselService.buildTransformString(0, this._angle);
+        }
         this._selected = true;
     }
-
+    
     deselect() {
+        this._transform_string = this.carouselService.buildTransformString(this._radius, this._angle);
         this._selected = false;
     }
 }

@@ -6,8 +6,7 @@ System.register([], function(exports_1, context_1) {
         setters:[],
         execute: function() {
             CarouselItemObject = (function () {
-                function CarouselItemObject(title, body) {
-                    this.title = title;
+                function CarouselItemObject(body) {
                     this.body = body;
                 }
                 ;
@@ -17,6 +16,9 @@ System.register([], function(exports_1, context_1) {
             CarouselService = (function () {
                 function CarouselService() {
                     this._carousel_items = [];
+                    this.opts = {
+                        radiusOnSelect: false
+                    };
                 }
                 CarouselService.prototype.getCarouselItems = function (limit) {
                     if (limit === void 0) { limit = this._carousel_items.length; }
@@ -43,6 +45,14 @@ System.register([], function(exports_1, context_1) {
                         string = 'rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
                     }
                     return string;
+                };
+                CarouselService.prototype.options = function () {
+                    var self = this;
+                    return {
+                        radiusOnSelect: function () {
+                            return self.opts.radiusOnSelect;
+                        }
+                    };
                 };
                 return CarouselService;
             }());

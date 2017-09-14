@@ -25,7 +25,8 @@ System.register(['angular2/core', '../carousel-item/carousel-item.component', '.
             }],
         execute: function() {
             CarouselComponent = (function () {
-                function CarouselComponent(carouselService) {
+                function CarouselComponent(el, carouselService) {
+                    this.el = el;
                     this.carouselService = carouselService;
                 }
                 CarouselComponent.prototype.keyboardInput = function (event) {
@@ -39,8 +40,9 @@ System.register(['angular2/core', '../carousel-item/carousel-item.component', '.
                     }
                 };
                 CarouselComponent.prototype.ngOnInit = function () {
-                    this._raw_items = this.carouselService.getCarouselItems(5);
+                    this._raw_items = this.carouselService.getCarouselItems();
                     var count = this._raw_items.length;
+                    this.el.nativeElement.style.perspective = (count * 100) + "px";
                     this._inc_step = 360 / count;
                     this._radius = (this._item_width / 1.9) / Math.tan(Math.PI / count);
                     this._current_index = 0;
@@ -121,7 +123,7 @@ System.register(['angular2/core', '../carousel-item/carousel-item.component', '.
                         styleUrls: ['app/carousel/carousel.component.css'],
                         directives: [carousel_item_component_1.CarouselItem]
                     }), 
-                    __metadata('design:paramtypes', [carousel_service_service_1.CarouselService])
+                    __metadata('design:paramtypes', [core_1.ElementRef, carousel_service_service_1.CarouselService])
                 ], CarouselComponent);
                 return CarouselComponent;
             }());

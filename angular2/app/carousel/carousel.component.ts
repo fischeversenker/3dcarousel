@@ -1,4 +1,4 @@
-import {Component, HostListener, Renderer, Input, OnInit, OnChanges, QueryList, ViewChildren} from 'angular2/core';
+import {Component, HostListener, ElementRef, Input, OnInit, OnChanges, QueryList, ViewChildren} from 'angular2/core';
 import {CarouselItem} from '../carousel-item/carousel-item.component';
 import {CarouselService} from '../shared/carousel-service.service';
 import {CarouselItemObject} from '../shared/carousel-service.service';
@@ -33,11 +33,13 @@ export class CarouselComponent {
     _radius: number;
     _transform_string: string;
 
-    constructor(private carouselService: CarouselService) { }
+    constructor(private el: ElementRef, private carouselService: CarouselService) {
+    }
     
     ngOnInit() {
-        this._raw_items = this.carouselService.getCarouselItems(5);
+        this._raw_items = this.carouselService.getCarouselItems();
         let count = this._raw_items.length;
+        this.el.nativeElement.style.perspective = (count * 100) + "px";
         this._inc_step = 360 / count;
         this._radius = (this._item_width / 1.9) / Math.tan(Math.PI / count);
         this._current_index = 0;

@@ -1,7 +1,6 @@
 <div class="item" 
     [ngStyle]="{'transform': _transform_string, 'width': _width_string}"
     [style.width]="_width"
-    [ngClass]="{'selected' : _selected}">
-    <h3>{{ _title }}</h3>
-    <p [innerHTML]="_body"></p>
+    [ngClass]="{'selected' : _selected}"
+    [innerHTML]="_body">
 </div>

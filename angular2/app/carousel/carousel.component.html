@@ -1,7 +1,6 @@
 <ul class="carousel" [ngStyle]="{'transform': _transform_string}">
     <li *ngFor="#item of _raw_items; #i = index">
         <carousel-item
-            [title]="item.title" 
             [body]="item.body"
             [radius]="_radius"
             [angle]="angleForIndex(i)"

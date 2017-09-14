@@ -1,13 +1,17 @@
 export class CarouselItemObject {
-    constructor(public title: string, public body: string) { };
+    constructor(public body: string) { };
 }
 
 export class CarouselService {
 
     private _carousel_items: CarouselItemObject[];
+    private opts: Object;
 
     constructor() {
         this._carousel_items = [];
+        this.opts = {
+            radiusOnSelect: false
+        };
     }
 
     public getCarouselItems(limit: number = this._carousel_items.length) {
@@ -35,5 +39,14 @@ export class CarouselService {
             string = 'rotateY(' + angle + 'deg) translateZ(' + radius + 'px)';
         }
         return string;
+    }
+
+    public options() {
+        let self = this;
+        return {
+            radiusOnSelect: function() {
+                return self.opts.radiusOnSelect;
+            }
+        };
     }
 }
